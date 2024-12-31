@@ -19,8 +19,8 @@ const LogoutBtn = () => {
     }
 
   return (
-    <div className="flex items-center gap-4">
-        <p className="flex items-center bg-neutral-50 border border-neutral-200 p-1 pr-3 rounded hover:bg-neutral-100"><User height={16} /> {userData.name}</p>
+    <div className="flex items-center gap-2">
+        <p className="flex items-center p-1 pr-3 rounded hover:bg-neutral-100"><User height={16} /> {userData.name}</p>
         <Button variant="outline" onClick={logoutHandler}>Logout</Button>
     </div>
   )

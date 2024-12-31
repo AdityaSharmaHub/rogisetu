@@ -3,9 +3,10 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useForm } from "react-hook-form"
 import authServices from "@/services/appwrite/authServices"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { useDispatch } from "react-redux"
 import { login } from "../features/auth/authSlice"
+import { useState } from "react"
 
 type LoginFormData = {
   email: string;
@@ -18,8 +19,10 @@ const Login: React.FC = () => {
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const [loading, setLoading] = useState(false)
 
   const onSubmit = async (data:LoginFormData) => {
+    setLoading(true)
     try {
       const {email, password} = data;
       const session = await authServices.loginUser(email, password)
@@ -27,12 +30,15 @@ const Login: React.FC = () => {
         const userData = await authServices.getCurrentUser()
         if(userData) {
           dispatch(login(userData))
+          setLoading(false)
           alert("Logged in successully!")
           navigate("/")
         }
       }
     } catch (error) {
       console.error("Login failed: ", error);
+      alert(error)
+      setLoading(false)
       throw error;
     }
   }
@@ -52,7 +58,7 @@ const Login: React.FC = () => {
               id="email"
               placeholder="Enter your email"
               {...register("email", {
-                required: true,
+                required: "Email is required",
                 pattern: {
                   value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
                   message: "Enter a valid email",
@@ -72,9 +78,8 @@ const Login: React.FC = () => {
               id="password"
               placeholder="Enter your password"
               {...register("password", {
-                required: true,
-                minLength: 8,
-                maxLength: 20,
+                required: "Password is required",
+                minLength: {value: 8, message: "Password must be at least 8 characters"}
               })}
             />
             {errors.password && (
@@ -84,9 +89,12 @@ const Login: React.FC = () => {
             )}
           </div>
           <Button type="submit" size="lg" className="w-full">
-            Login
+            {loading ? "Loading..." : "Login"}
           </Button>
         </form>
+        <div className="mt-4">
+          <p className="text-center text-sm text-muted-foreground">Don't have an account? <Link to="/signup" className="text-primary hover:underline">Create one</Link></p>
+        </div>
       </div>
     </div>
   )

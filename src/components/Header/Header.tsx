@@ -36,9 +36,14 @@ const Header = () => {
       </nav>
       <div className="flex gap-4">
         {!authStatus && (
-          <Button asChild>
-            <Link to="/login">Login</Link>
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button asChild>
+              <Link to="/login">Login</Link>
+            </Button>
+            <Button variant="outline" asChild>
+              <Link to="/signup">Signup</Link>
+            </Button>
+          </div>
         )}
         {authStatus && (
           <LogoutBtn />

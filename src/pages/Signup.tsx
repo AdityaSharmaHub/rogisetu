@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useForm } from "react-hook-form";
 import authServices from "@/services/appwrite/authServices";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { login } from "@/features/auth/authSlice";
@@ -42,6 +42,7 @@ const Signup: React.FC = () => {
       }
     } catch (error) {
       console.error("Signup failed: ", error);
+      alert(error)
       setLoading(false)
       throw error;
     }
@@ -116,6 +117,9 @@ const Signup: React.FC = () => {
             {loading ? "Creating..." : "Create account"}
           </Button>
         </form>
+        <div className="mt-4">
+          <p className="text-center text-sm text-muted-foreground">Already have an account? <Link to="/login" className="text-primary hover:underline">Login</Link></p>
+        </div>
       </div>
     </div>
   );
