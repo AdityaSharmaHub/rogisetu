@@ -7,6 +7,7 @@ import { Link, useNavigate } from "react-router-dom"
 import { useDispatch } from "react-redux"
 import { login } from "../features/auth/authSlice"
 import { useState } from "react"
+import { toast } from "sonner"
 
 type LoginFormData = {
   email: string;
@@ -31,12 +32,13 @@ const Login: React.FC = () => {
         if(userData) {
           dispatch(login(userData))
           setLoading(false)
-          alert("Logged in successully!")
+          toast.success("Logged in successully!")
           navigate("/")
         }
       }
     } catch (error) {
       console.error("Login failed: ", error);
+      toast.error("Login failed")
       alert(error)
       setLoading(false)
       throw error;

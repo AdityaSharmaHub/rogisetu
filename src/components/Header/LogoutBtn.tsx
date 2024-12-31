@@ -3,6 +3,7 @@ import { Button } from "../ui/button"
 import { useDispatch, useSelector } from "react-redux"
 import authServices from "@/services/appwrite/authServices"
 import { logout } from "@/features/auth/authSlice"
+import { toast } from "sonner"
 
 const LogoutBtn = () => {
 
@@ -13,9 +14,12 @@ const LogoutBtn = () => {
         authServices.logoutUser()
         .then(() => (
             dispatch(logout()),
-            alert("Logout successfully!")
+            toast.success("Logout successfully!")
         ))
-        .catch((err) => console.error(err))
+        .catch((err) => (
+          console.error(err),
+          toast.error("Failed to logout")
+        ))
     }
 
   return (

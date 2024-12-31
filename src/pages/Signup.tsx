@@ -7,6 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { login } from "@/features/auth/authSlice";
+import { toast } from "sonner";
 
 type SignupFormData = {
   name: string;
@@ -33,7 +34,7 @@ const Signup: React.FC = () => {
 
       if (userData) {
         setLoading(false)
-        alert("Account created successfully!")
+        toast.success("Account created successfully!")
         const userData = await authServices.getCurrentUser();
         if (userData) {
           dispatch(login(userData))
@@ -42,6 +43,7 @@ const Signup: React.FC = () => {
       }
     } catch (error) {
       console.error("Signup failed: ", error);
+      toast.error("Signup failed")
       alert(error)
       setLoading(false)
       throw error;
@@ -84,7 +86,6 @@ const Signup: React.FC = () => {
                 required: "Email is required",
                 pattern: {
                   value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                  // regex
                   message: "Enter a valid email",
                 },
               })}
